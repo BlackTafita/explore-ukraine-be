@@ -7,6 +7,12 @@ import { CreateQuestionDto } from './dto/create-question.dto';
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
+
+  @Get('game')
+  async getQuestionsForGame(): Promise<QuestionModel[]> {
+    return [];
+  }
+
   @Get(':id')
   async getQuestion(@Param('id') id: string): Promise<QuestionModel> {
     return this.questionService.question({ id: Number(id) });
