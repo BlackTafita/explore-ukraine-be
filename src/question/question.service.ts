@@ -10,6 +10,10 @@ export class QuestionService {
     return this.prisma.question.create({ data });
   }
 
+  async createManyQuestions(data: Prisma.QuestionCreateManyArgs): Promise<Prisma.BatchPayload> {
+    return this.prisma.question.createMany(data);
+  }
+
   async question(where: Prisma.QuestionWhereUniqueInput): Promise<Question> {
     return this.prisma.question.findUnique({
       where,

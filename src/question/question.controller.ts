@@ -22,6 +22,13 @@ export class QuestionController {
   async createQuestion(
     @Body() createDto: CreateQuestionDto,
   ): Promise<QuestionModel> {
-    return this.questionService.createQuestion(createDto);
+    return this.questionService.createQuestion({
+      ...createDto,
+      category: {
+        connect: {
+          id: createDto.categoryId,
+        }
+      }
+    });
   }
 }

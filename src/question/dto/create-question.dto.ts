@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateQuestionDto {
@@ -16,4 +16,14 @@ export class CreateQuestionDto {
   @IsNotEmpty()
   @IsNumber()
   correct: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  categoryId: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  answerDesc: string;
 }

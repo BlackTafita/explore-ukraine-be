@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "darwin-arm64", "darwin"]
 }
 
@@ -8,11 +8,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model QuestionCategory {
+  id       Int        @id @default(autoincrement())
+  title    String     @db.VarChar(255)
+  Question Question[]
+}
+
 model Question {
-  id          Int      @id @default(autoincrement())
-  description String
-  answers     String[] @db.VarChar(200)
-  correct     Int
+  id                 Int              @id @default(autoincrement())
+  category           QuestionCategory @relation(fields: [questionCategoryId], references: [id])
+  description        String
+  answers            String[]         @db.VarChar(200)
+  answerDesc         String           @db.Text
+  correct            Int
+  questionCategoryId Int
 }
 
 model User {
