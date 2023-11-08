@@ -26,14 +26,16 @@ export class QuestionService {
     cursor?: Prisma.QuestionWhereUniqueInput;
     where?: Prisma.QuestionWhereInput;
     orderBy?: Prisma.QuestionOrderByWithRelationInput;
+    select?: Prisma.QuestionSelect,
   }): Promise<Question[]> {
-    const { skip, take, cursor, where, orderBy } = params;
+    const { skip, take, cursor, where, orderBy, select } = params;
     return this.prisma.question.findMany({
       skip,
       take,
       cursor,
       where,
       orderBy,
+      select,
     });
   }
 
@@ -54,5 +56,37 @@ export class QuestionService {
     return this.prisma.question.delete({
       where,
     });
+  }
+
+  async getQuestionsPoll(categoryId: string): Promise<Question[]> {
+    const questionIds = await this.questions({
+      where: {
+        questionCategoryId: Number(categoryId),
+      },
+      select: {
+        id: true,
+      }
+    }) as unknown as { id: number }[];
+
+    // get random
+    const selectedIds = [];
+    while (true) {
+      if (selectedIds.length === 10) {
+        break;
+      }
+      const num = Math.floor(Math.random() * questionIds.length + 1);
+      if (questionIds[num] && selectedIds.findIndex(el => el?.id === questionIds[num].id) === -1) {
+        selectedIds.push(questionIds[num].id);
+      }
+    }
+
+    return this.questions({
+      where: {
+        id: {
+          in: selectedIds,
+        },
+      },
+    });
+
   }
 }

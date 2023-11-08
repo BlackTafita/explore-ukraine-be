@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { Question as QuestionModel } from '@prisma/client';
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
@@ -9,8 +9,8 @@ export class QuestionController {
 
 
   @Get('game')
-  async getQuestionsForGame(): Promise<QuestionModel[]> {
-    return [];
+  async getQuestionsForGame(@Query('categoryId') category: string): Promise<QuestionModel[]> {
+    return this.questionService.getQuestionsPoll(category);
   }
 
   @Get(':id')
