@@ -9,9 +9,11 @@ datasource db {
 }
 
 model QuestionCategory {
-  id       Int        @id @default(autoincrement())
-  title    String     @db.VarChar(255)
-  Question Question[]
+  id         Int          @id @default(autoincrement())
+  title      String       @db.VarChar(255)
+  imageUrl   String       @default("") @db.Text
+  Question   Question[]
+  GameResult GameResult[]
 }
 
 model Question {
@@ -27,4 +29,13 @@ model Question {
 model User {
   id       Int    @id @default(autoincrement())
   nickname String @db.VarChar(255)
+}
+
+model GameResult {
+  id                 Int              @id @default(autoincrement())
+  questionCategoryId Int
+  category           QuestionCategory @relation(fields: [questionCategoryId], references: [id])
+  questionsCount     Int
+  successAnswerCount Int
+  isWin              Boolean
 }
