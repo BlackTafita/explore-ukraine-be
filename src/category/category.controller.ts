@@ -1,8 +1,8 @@
-import { Body, Controller, HttpException, HttpStatus, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CategoryService } from "./category.service";
 import xlsx from 'node-xlsx';
-import { Prisma } from "@prisma/client";
+import { Prisma, QuestionCategory } from "@prisma/client";
 import { QuestionService } from "../question/question.service";
 
 @Controller('category')
@@ -74,6 +74,11 @@ export class CategoryController {
 			case "D":
 				return 3;
 		}
+	}
+
+	@Get()
+	async getCategories(): Promise<QuestionCategory[]> {
+		return this.categoryService.findMany({});
 	}
 
 }
